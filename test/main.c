@@ -4,11 +4,13 @@
 
 #include "../cutils.h"
 
-int main() {
-  log_info("test");
-  log_debug("test");
-  log_warn("test");
-  log_error("test");
-  log_fatal("test");
-  return 0;
+int main()
+{
+    log_info("test");
+    log_debug("test");
+    log_warn("test");
+    log_error("test");
+    assert_ndbg(false == true);
+    // log_fatal("test");
+    return 0;
 }

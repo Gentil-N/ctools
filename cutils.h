@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -12,17 +13,9 @@ extern "C"
 #endif
 
 /*
- *   MISCELLANEOUS
- */
-#define for_loop(index_name, limit) for (size_t index_name = 0; index_name < limit; ++index_name)
-#define min(x, y) (((x) < (y)) ? (x) : (y))
-#define max(x, y) (((x) > (y)) ? (x) : (y))
-#define clamp(x, low, up) min((up), max((x), (low)))
-
-/*
  *   STRING
  */
-#define filename(path) strrchr(path, '/') ? strrchr(path, '/') + 1 : path
+#define filename(path) (strrchr(path, '/') ? strrchr(path, '/') + 1 : path)
 
     /*
      *   LOGGER
@@ -51,8 +44,9 @@ extern "C"
 #define log_fatal(...)                                                                                                 \
     {                                                                                                                  \
         _log(LOG_LEVEL_FATAL, -1, __FILE__, __LINE__, __VA_ARGS__);                                                    \
-        exit(1);                                                                                                       \
+        abort();                                                                                                       \
     }
+
     /*
      *   LIST
      */
@@ -136,6 +130,31 @@ extern "C"
     int tracker_unregister(void *address);
     int tracker_change_register(void *old_address, void *new_address);
     int tracker_trace(tracker_trace_fn fn);
+
+    /*
+     *   MISCELLANEOUS
+     */
+
+#define for_loop(index_name, limit) for (size_t index_name = 0; index_name < limit; ++index_name)
+#define min(x, y) (((x) < (y)) ? (x) : (y))
+#define max(x, y) (((x) > (y)) ? (x) : (y))
+#define clamp(x, low, up) min((up), max((x), (low)))
+#define assert_ndbg(cond)                                                                                              \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        if (!(cond))                                                                                                   \
+        {                                                                                                              \
+            fprintf(stderr, "assert_ndbg failed in %s at line %d\n", __FILE__, __LINE__);                              \
+            abort();                                                                                                   \
+        }                                                                                                              \
+    } while (0)
+#define fatal(reason)                                                                                                  \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        fprintf(stderr, "fatal in %s at line %d: %s\n", __FILE__, __LINE__, reason);                                   \
+        abort();                                                                                                       \
+    } while (0);
+#define fatal_none() fatal("none")
 
 #ifdef __cplusplus
 }

@@ -36,24 +36,24 @@ static void std_callback(int level, int code, const char *file, int line, const 
     switch (level)
     {
     case LOG_LEVEL_INFO:
-        fprintf(stdout, "[INFO](%s: %i) %s\n", filename(file), line, msg);
+        fprintf(stdout, "[INFO](%s: %i) %s\033[0m\n", filename(file), line, msg);
         fflush(stdout);
         break;
     case LOG_LEVEL_DEBUG:
 #ifndef NDEBUG
-        fprintf(stdout, "\033[0;32m[DEBUG](%s: %i) %s\n", filename(file), line, msg);
+        fprintf(stdout, "\033[0;32m[DEBUG](%s: %i) %s\033[0m\n", filename(file), line, msg);
         fflush(stdout);
 #endif // NDEBUG
         break;
     case LOG_LEVEL_WARN:
-        fprintf(stdout, "\033[0;33m[WARN](%s: %i) %s\n", filename(file), line, msg);
+        fprintf(stdout, "\033[0;33m[WARN](%s: %i) %s\033[0m\n", filename(file), line, msg);
         fflush(stdout);
         break;
     case LOG_LEVEL_ERROR:
-        fprintf(stderr, "\033[0;31m[ERROR](%s: %i) %s\n", filename(file), line, msg);
+        fprintf(stderr, "\033[0;31m[ERROR](%s: %i) %s\033[0m\n", filename(file), line, msg);
         break;
     case LOG_LEVEL_FATAL:
-        fprintf(stderr, "\033[0;35m[FATAL](%s: %i) %s\naborting...\n", filename(file), line, msg);
+        fprintf(stderr, "\033[0;35m[FATAL](%s: %i) %s\033[0m\n", filename(file), line, msg);
         break;
     }
 }
